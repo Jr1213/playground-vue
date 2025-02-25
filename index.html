@@ -24,6 +24,7 @@
         ul li {
             margin-bottom: 10px;
         }
+
         ul li label {
             cursor: pointer;
         }
@@ -36,10 +37,7 @@
             <h3>Pedding Tasks ({{onGoingTasks.length}})</h3>
             <ul>
                 <li v-for="task in onGoingTasks" :key="task.id">
-                    <label>
-                        <input type="checkbox" v-model="task.status">
-                        {{task.name}}
-                    </label>
+                    <lable-item>{{task.name}}</lable-item>
                 </li>
             </ul>
         </section>
@@ -47,10 +45,7 @@
             <h3>Finished Tasks ({{finishedTasks.length}})</h3>
             <ul>
                 <li v-for="task in finishedTasks" :key="task.id">
-                    <label>
-                        <input type="checkbox" v-model="task.status">
-                        {{task.name}}
-                    </label>
+                    <lable-item>{{task.name}}</lable-item>
                 </li>
             </ul>
         </section>
@@ -58,7 +53,7 @@
 
     <script>
         const { createApp } = Vue;
-        createApp({
+        let app = {
             data() {
                 return {
                     tasks: [
@@ -82,8 +77,24 @@
                 onGoingTasks() {
                     return this.tasks.filter(a => !a.status)
                 }
+            },
+
+            components: {
+                'lable-item': {
+                    template: `<label>
+                        <input type="checkbox" v-model="status">
+                        <slot />
+                    </label>
+                    `
+                },
+                data(){
+                    return {
+                        status: false
+                    }
+                }
             }
-        }).mount('#app')
+        }
+        createApp(app).mount('#app')
     </script>
 </body>
 
